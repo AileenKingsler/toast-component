@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
+import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,6 +10,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
+  const [isRendered, setIsRendered] = React.useState(false);
 
   return (
     <div className={styles.wrapper}>
@@ -17,7 +19,19 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <form className={styles.controlsWrapper}>
+      {isRendered && (
+        <Toast variant={variant} hideToast={() => setIsRendered(false)}>
+          {message}
+        </Toast>
+      )}
+
+      <form
+        className={styles.controlsWrapper}
+        onSubmit={(event) => {
+          event.preventDefault();
+          setIsRendered(true);
+        }}
+      >
         <div className={styles.row}>
           <label
             htmlFor="message"
